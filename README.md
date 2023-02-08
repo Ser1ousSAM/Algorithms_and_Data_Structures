@@ -1,1 +1,3 @@
-# Algorithms_and_Data_Structures
+# Algorithms_And_Data_Structures
+
+Kharitonov Gleb 2254
