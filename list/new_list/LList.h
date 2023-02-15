@@ -29,6 +29,8 @@ public:
 
     void clear();
 
+    void print();
+
     T front();
 
     T back();
@@ -39,6 +41,7 @@ private:
     Node<T> *z;
 
     int _size;
+
 };
 
 template<typename T>

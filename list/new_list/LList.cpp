@@ -6,9 +6,12 @@ using std::cout;
 template<typename T>
 LList<T>::LList() {
     _size = 0;
-    z->_val = NULL;
+    Node<T> *new_el_1 = new Node<T>(NULL);
+    head = new_el_1;
+
+    Node<T> *new_el_2 = new Node<T>(NULL);
+    z = new_el_2;
     z->_next = z;
-    head->_val = NULL;
     head->_next = z;
 }
 
@@ -25,14 +28,13 @@ bool LList<T>::empty() {
 template<typename T>
 void LList<T>::push_back(T _val) {
     Node<T> *new_element = new Node<T>(_val);
-    new_element->_next = z;
 
     Node<T> *current = head;
     while (current->_next != z) {
         current = current->_next;
     }
     current->_next = new_element;
-
+    new_element->_next = z;
     _size++;
 }
 
@@ -61,8 +63,8 @@ void LList<T>::insert(size_t index, T _val) {
         return;
     }
 
-    Node<T> *previous_element = nullptr;
-    curr = head;
+    Node<T> *previous_element = head;
+    curr = head->_next;
     count = 0;
     while (count != index) {
         count++;
@@ -82,12 +84,16 @@ void LList<T>::remove_at(size_t index) {
     if (index < 0 || index >= _size)
         throw std::out_of_range("oooooy, this is outside");
     else {
-        if (index == _size - 1)
+        if (index == _size - 1){
             pop_back();
-        else if (index == 0)
+            return;
+        }
+        else if (index == 0){
             pop_front();
+            return;
+        }
 
-        Node<T> *curr = head->_next, *previous = nullptr;
+        Node<T> *curr = head->_next, *previous = head;
         int curr_i = 0;
         while (index != curr_i) {
             previous = curr;
@@ -97,6 +103,7 @@ void LList<T>::remove_at(size_t index) {
         previous->_next = curr->_next;
         delete curr;
     }
+    _size--;
 }
 
 template<typename T>
@@ -109,8 +116,9 @@ void LList<T>::pop_back() {
         previous = current;
         current = current->_next;
     }
-    previous = current->_next;
+    previous->_next = current->_next;
     delete current;
+    _size--;
 }
 
 template<typename T>
@@ -121,8 +129,10 @@ void LList<T>::pop_front() {
     Node<T> *temp = head->_next;
     head->_next = temp->_next;
     delete temp;
+    _size--;
 }
 
+//DEBUG CLEAR
 template<typename T>
 void LList<T>::clear() {
     Node<T> *curr = head->_next, *previous;
@@ -131,7 +141,6 @@ void LList<T>::clear() {
         curr = curr->_next;
         delete previous;
     }
-    delete previous;
     head->_next = z;
     _size = 0;
 }
@@ -169,56 +178,57 @@ T &LList<T>::operator[](const size_t index) {
     }
 }
 
+
 //void print_lst(const LList<char> &l) {
-//    for (auto i = 0; i < l.size(); i++) {
-//        cout << l[i] << " ";
-//    }
+//    for (size_t i = 0; i != l.size(); i++)
+//        l[i] = char('a' + i);
 //    cout << '\n';
 //}
 
-// template<typename T>
-// void LList<T>::print() {
-//     if (!empty()) {
-//         Node<T> *current = head.next;
-//         while (current != z) {
-//             cout << current->_val << " ";
-//             current = current->_next;
-//         }
-//         cout << '\n';
-//     }
-// }
+ template<typename T>
+ void LList<T>::print() {
+     if (!empty()) {
+         Node<T> *current = head->_next;
+         while (current != z) {
+             cout << current->_val << " ";
+             current = current->_next;
+         }
+         cout << '\n';
+     }
+ }
 
 int main() {
-    LList<char> lst; // ваш список
+    LList<char> lst;
     std::cout << std::boolalpha << lst.empty() << std::endl;
     for (int i = 0; i < 5; i++)
         lst.push_back(char('a' + i));
 
-//    print_lst(lst);
+    lst.print();
 
     for (int i = 0; i < 5; i++)
         lst.insert(0, char('z' - i));
 
-//    print_lst(lst);
+    lst.print();
 
     for (size_t i = 0; i != lst.size(); i++)
         lst[i] = char('a' + i);
 
-//    print_lst(lst);
+    lst.print();
 
     lst.pop_back();
     lst.pop_front();
-//    print_lst(lst);
+
+    lst.print();
 
     lst.remove_at(5);
     lst.insert(3, 'o');
 
-//    print_lst(lst);
+    lst.print();
 
     lst.clear();
     lst.push_back('q');
     lst.push_back('w');
-//а почему запись по индексу и чтение это отдельные методы?
+        //а почему запись по индексу и чтение это отдельные методы?
     std::cout << lst.size() << ' ' << std::boolalpha << lst.empty() << std::endl;
     return 0;
 } // деструктор освободит оставшиеся узлы
