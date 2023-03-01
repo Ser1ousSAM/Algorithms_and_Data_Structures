@@ -218,15 +218,6 @@ compiled_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 compiled_SOURCE_DIR:STATIC=/home/gleb/Desktop/University/Algorithms_and_Data_Structures/task_lesson_1
 
-//Value Computed by CMake
-main_BINARY_DIR:STATIC=/home/gleb/Desktop/University/Algorithms_and_Data_Structures/task_lesson_1
-
-//Value Computed by CMake
-main_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-main_SOURCE_DIR:STATIC=/home/gleb/Desktop/University/Algorithms_and_Data_Structures/task_lesson_1
-
 
 ########################
 # INTERNAL cache entries
