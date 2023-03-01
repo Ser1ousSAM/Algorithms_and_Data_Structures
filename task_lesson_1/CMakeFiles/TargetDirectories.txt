@@ -1,3 +1,0 @@
-/home/gleb/Desktop/University/Algorithms_and_Data_Structures/task_lesson_1/CMakeFiles/compiled.dir
-/home/gleb/Desktop/University/Algorithms_and_Data_Structures/task_lesson_1/CMakeFiles/edit_cache.dir
-/home/gleb/Desktop/University/Algorithms_and_Data_Structures/task_lesson_1/CMakeFiles/rebuild_cache.dir
