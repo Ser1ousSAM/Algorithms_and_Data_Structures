@@ -2,4 +2,6 @@
 
 Kharitonov Gleb 2254
 
-my_var=8
+my var for additional = 8
+
+my var for main = 3
