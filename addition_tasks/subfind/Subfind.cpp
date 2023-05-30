@@ -3,8 +3,6 @@
 #include <chrono>
 #include <fstream>
 #include <vector>
-#include <unordered_map>
-#include <unordered_set>
 
 using namespace std;
 
@@ -22,129 +20,65 @@ size_t naive(const std::string &str, const std::string &sub) {
 }
 
 // https://e-maxx.ru/algo/prefix_function
-vector<int> prefix_function(string s) {
-    int n = (int) s.length();
-    vector<int> pi(n);
-    for (int i = 1; i < n; ++i) {
+
+// https://www.geeksforgeeks.org/kmp-algorithm-for-pattern-searching/
+size_t kmp(string &txt, const string &pat) {
+    int M = pat.size();
+    int N = txt.size();
+
+    vector<int> pi(M);
+    for (int i = 1; i < M; ++i) {
         int j = pi[i - 1];
-        while (j > 0 && s[i] != s[j])
+        while (j > 0 && pat[i] != pat[j])
             j = pi[j - 1];
-        if (s[i] == s[j]) ++j;
+        if (pat[i] == pat[j]) ++j;
         pi[i] = j;
     }
-    return pi;
+
+    int i = 0;
+    int j = 0;
+    while ((N - i) >= (M - j)) {
+        if (pat[j] == txt[i]) {
+            ++j;
+            ++i;
+        }
+        if (j == M) {
+            return i - j;
+        } else if (i < N && pat[j] != txt[i]) {
+            if (j != 0)
+                j = pi[j - 1];
+            else
+                ++i;
+        }
+    }
+    return std::string::npos;
 }
 
-//find the first occurrence of sub
-size_t kmp(const std::string &str, const std::string &sub) {
-    auto n = (long long) sub.length();
-    string merged_str = sub + "#" + str;
-    vector<int> pi = prefix_function(merged_str);
-    for (long long i = n + 1; i < merged_str.length(); ++i) {
-        if (pi[i] == n)
-            //to find all occurrence of sub just add all i-th in vector
-            return i - 2 * n;
+// https://www.geeksforgeeks.org/kmp-algorithm-for-pattern-searching/
+size_t bmSearch(const string &text, const string &pattern) {
+    int m = pattern.size();
+    int n = text.size();
+
+    int badchar[128];
+    int i;
+    for (i = 0; i < 128; i++)
+        badchar[i] = -1;
+    for (i = 0; i < m; i++)
+        badchar[(int) pattern[i]] = i;
+
+    int s = 0;
+    while (s <= (n - m)) {
+        int j = m - 1;
+
+        while (j >= 0 && pattern[j] == text[s + j])
+            j--;
+
+        if (j < 0) {
+            return s;
+        } else
+            s += max(1, j - badchar[text[s + j]]);
     }
-    return -1;
-}
-
-size_t bmOptimised(const std::string &str, const std::string &sub) {
-    if (str.length() < sub.length()) {
-        return -1;
-    }
-
-    if (!sub.length()) {
-        return str.length(); //сыс
-    }
-
-    typedef unordered_map<char, int> TStopTable;
-    typedef unordered_map<int, int> TSufficsTable;
-    TStopTable stop_table;
-    TSufficsTable suffics_table;
-
-    for (int i = 0; i < sub.length(); ++i) {
-        stop_table[sub[i]] = i;
-    }
-
-    string rt(sub.rbegin(), sub.rend());
-    vector<int> p = prefix_function(sub), pr = prefix_function(rt);
-    for (int i = 0; i < sub.length() + 1; ++i) {
-        suffics_table[i] = sub.length() - p.back();
-    }
-
-    for (int i = 1; i < sub.length(); ++i) {
-        int j = pr[i];
-        suffics_table[j] = min(suffics_table[j], i - pr[i] + 1);
-    }
-
-    for (int shift = 0; shift <= str.length() - sub.length();) {
-        int pos = sub.length() - 1;
-
-        while (sub[pos] == str[pos + shift]) {
-            if (pos == 0) return shift;
-            --pos;
-        }
-
-        if (pos == sub.length() - 1) {
-            TStopTable::const_iterator stop_symbol = stop_table.find(str[pos + shift]);
-            int stop_symbol_additional = pos - (stop_symbol != stop_table.end() ? stop_symbol->second : -1);
-            shift += stop_symbol_additional;
-        } else {
-            shift += suffics_table[sub.length() - pos - 1];
-        }
-    }
-    return -1;
-}
-
-size_t bmDefault(const std::string &str, const std::string &sub) {
-    // Этап 1: формирование таблицы смещений
-    std::unordered_set<char> S;  // уникальные символы в образе
-    int M = sub.length();           // число символов в образе
-    std::unordered_map<char, int> d; // словарь смещений
-
-    for (int i = M - 2; i >= 0; --i) {  // итерации с предпоследнего символа
-        if (S.count(sub[i]) == 0) {    // если символ еще не добавлен в таблицу
-            d[sub[i]] = M - i - 1;
-            S.insert(sub[i]);
-        }
-    }
-
-    if (S.count(sub[M - 1]) == 0) {     // отдельно формируем последний символ
-        d[sub[M - 1]] = M;
-    }
-
-    d['*'] = M;                     // смещения для прочих символов
-
-    // Этап 2: поиск образа в строке
-    int N = str.length();
-    int i = M - 1;
-
-    if (N >= M) {
-        while (i < N) {
-            int k = 0;
-            int j = 0;
-            bool flBreak = false;
-            for (j = M - 1; j >= 0; --j) {
-                if (str[i - k] != sub[j]) {
-                    int off;
-                    if (j == M - 1) {
-                        off = d.count(str[i]) ? d[str[i]] : d['*']; // смещение, если не равен последний символ образа
-                    } else {
-                        off = d[sub[j]]; // смещение, если не равен не последний символ образа
-                    }
-                    i += off;   // смещение счетчика строки
-                    flBreak = true; // если несовпадение символа, то flBreak = true
-                    break;
-                }
-                ++k;    // смещение для сравниваемого символа в строке
-            }
-
-            if (!flBreak) { // если дошли до начала образа, значит, все его символы совпали
-                return i - k + 1;
-            }
-        }
-    }
-    return -1;
+    return std::string::npos;
 }
 
 int main() {
@@ -208,10 +142,10 @@ int main() {
         cout << indx[i] << '\t' << times[i] << endl;
     }
 
-    cout << "\nBM Бойер — Мур — Хорспул\n";
+    cout << "\nBM\n";
     for (size_t i = 0; i < n; i++) {
         auto time_one = chrono::high_resolution_clock::now();
-        auto index = bmDefault(str, sub);
+        auto index = bmSearch(str, sub);
         if (index == std::string::npos)
             std::cout << "not found\n";
         else
@@ -222,22 +156,6 @@ int main() {
     for (size_t i = 0; i < n; i++) {
         cout << indx[i] << '\t' << times[i] << endl;
     }
-
-    cout << "\nBM Optimised\n";
-    for (size_t i = 0; i < n; i++) {
-        auto time_one = chrono::high_resolution_clock::now();
-        auto index = bmOptimised(str, sub);
-        if (index == std::string::npos)
-            std::cout << "not found\n";
-        else
-            indx[i] = index;
-        auto time_two = chrono::high_resolution_clock::now();
-        times[i] = chrono::duration_cast<chrono::milliseconds>(time_two - time_one).count();
-    }
-    for (size_t i = 0; i < n; i++) {
-        cout << indx[i] << '\t' << times[i] << endl;
-    }
-
     return 0;
 }
 
