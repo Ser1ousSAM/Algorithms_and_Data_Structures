@@ -1,13 +1,11 @@
 //difference between class and typename - first for all, second for internal types(int, char...)
-template<typename T>
-class Node;
 
 template<typename T>
 class LList {
 public:
     LList();
 
-    ~LList() = default;
+    ~LList();
 
     void push_back(T);
 
@@ -37,19 +35,18 @@ public:
 
 
 private:
-    Node<T> *head;
-    Node<T> *z;
+    struct Node {
+        T _val;
+        Node *_next;
+
+        Node(T val = T()) : _val(val), _next(nullptr) {};
+
+    };
+    Node *head;
+    Node *z;
 
     int _size;
 
 };
 
-template<typename T>
-class Node {
-    T _val;
-    Node *_next;
 
-    Node(T val = T()) : _val(val), _next(nullptr) {};
-
-    friend class LList<T>;
-};

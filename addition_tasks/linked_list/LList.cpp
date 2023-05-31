@@ -6,10 +6,10 @@ using std::cout;
 template<typename T>
 LList<T>::LList() {
     _size = 0;
-    auto *new_el_1 = new Node<T>('\0');
+    auto *new_el_1 = new Node('\0');
     head = new_el_1;
 
-    auto *new_el_2 = new Node<T>('\0');
+    auto *new_el_2 = new Node('\0');
     z = new_el_2;
     z->_next = z;
     head->_next = z;
@@ -27,9 +27,9 @@ bool LList<T>::empty() {
 
 template<typename T>
 void LList<T>::push_back(T _val) {
-    auto *new_element = new Node<T>(_val);
+    auto *new_element = new Node(_val);
 
-    Node<T> *current = head;
+    Node *current = head;
     while (current->_next != z) {
         current = current->_next;
     }
@@ -40,7 +40,7 @@ void LList<T>::push_back(T _val) {
 
 template<typename T>
 void LList<T>::push_front(T _val) {
-    auto *new_element = new Node<T>(_val);
+    auto *new_element = new Node(_val);
 
     new_element->_next = head->_next;
     head->_next = new_element;
@@ -50,7 +50,7 @@ void LList<T>::push_front(T _val) {
 
 template<typename T>
 void LList<T>::insert(size_t index, T _val) {
-    Node<T> *curr;
+    Node *curr;
     int count;
     if (_size < index)
         throw std::out_of_range("oooooy, this is outside");
@@ -63,7 +63,7 @@ void LList<T>::insert(size_t index, T _val) {
         return;
     }
 
-    Node<T> *previous_element = head;
+    Node *previous_element = head;
     curr = head->_next;
     count = 0;
     while (count != index) {
@@ -72,7 +72,7 @@ void LList<T>::insert(size_t index, T _val) {
         curr = curr->_next;
     }
 
-    Node<T> *new_element = new Node<T>(_val);
+    Node *new_element = new Node(_val);
     new_element->_next = curr;
     previous_element->_next = new_element;
 
@@ -84,16 +84,15 @@ void LList<T>::remove_at(size_t index) {
     if (index < 0 || index >= _size)
         throw std::out_of_range("oooooy, this is outside");
     else {
-        if (index == _size - 1){
+        if (index == _size - 1) {
             pop_back();
             return;
-        }
-        else if (index == 0){
+        } else if (index == 0) {
             pop_front();
             return;
         }
 
-        Node<T> *curr = head->_next, *previous = head;
+        Node *curr = head->_next, *previous = head;
         int curr_i = 0;
         while (index != curr_i) {
             previous = curr;
@@ -111,7 +110,7 @@ void LList<T>::pop_back() {
     if (_size == 0)
         return;
 
-    Node<T> *current = head->_next, *previous;
+    Node *current = head->_next, *previous;
     while (current->_next != z) {
         previous = current;
         current = current->_next;
@@ -126,7 +125,7 @@ void LList<T>::pop_front() {
     if (_size == 0)
         return;
 
-    Node<T> *temp = head->_next;
+    Node *temp = head->_next;
     head->_next = temp->_next;
     delete temp;
     _size--;
@@ -135,7 +134,7 @@ void LList<T>::pop_front() {
 //DEBUG CLEAR
 template<typename T>
 void LList<T>::clear() {
-    Node<T> *curr = head->_next, *previous;
+    auto curr = head->_next, previous = head;
     while (curr != z) {
         previous = curr;
         curr = curr->_next;
@@ -143,6 +142,13 @@ void LList<T>::clear() {
     }
     head->_next = z;
     _size = 0;
+}
+
+template<typename T>
+LList<T>::~LList() {
+    clear();
+    delete head->_next;
+    delete head;
 }
 
 template<typename T>
@@ -154,20 +160,21 @@ T LList<T>::front() {
 
 template<typename T>
 T LList<T>::back() {
-    if (_size != 0){
-        Node<T> *current = head->_next;
-        while (current->_next != z){
+    if (_size != 0) {
+        Node *current = head->_next;
+        while (current->_next != z) {
             current = current->_next;
         }
         return current;
     }
     throw std::out_of_range("oooooy, this is outside");
 }
+
 template<typename T>
 T &LList<T>::operator[](const size_t index) {
     if (_size <= index || index < 0)
         throw std::out_of_range("oooooy, this is outside");
-    Node<T> *curr;
+    Node *curr;
     size_t curr_i = 0;
     curr = head->_next;
     while (curr != z) {
@@ -178,17 +185,17 @@ T &LList<T>::operator[](const size_t index) {
     }
 }
 
- template<typename T>
- void LList<T>::print() {
-     if (!empty()) {
-         Node<T> *current = head->_next;
-         while (current->_next != z) {
-             cout << current->_val << " -> ";
-             current = current->_next;
-         }
-         cout << current->_val << '\n';
-     }
- }
+template<typename T>
+void LList<T>::print() {
+    if (!empty()) {
+        Node *current = head->_next;
+        while (current->_next != z) {
+            cout << current->_val << " -> ";
+            current = current->_next;
+        }
+        cout << current->_val << '\n';
+    }
+}
 
 int main() {
     LList<char> lst;
@@ -222,5 +229,6 @@ int main() {
     lst.push_back('q');
     lst.push_back('w');
     std::cout << lst.size() << ' ' << std::boolalpha << lst.empty() << std::endl;
+
     return 0;
 }
