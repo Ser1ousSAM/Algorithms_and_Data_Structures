@@ -10,5 +10,6 @@
 *.txt
 *example*
 *.docx
+*.~*
 *.odt
 *.out
