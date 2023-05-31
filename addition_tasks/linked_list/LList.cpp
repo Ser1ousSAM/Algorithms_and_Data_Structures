@@ -1,4 +1,6 @@
 #include <iostream>
+#include <numeric>
+#include <vector>
 #include "LList.h"
 
 using std::cout;
@@ -6,13 +8,20 @@ using std::cout;
 template<typename T>
 LList<T>::LList() {
     _size = 0;
-    auto *new_el_1 = new Node('\0');
+    auto new_el_1 = new Node<T>();
     head = new_el_1;
 
-    auto *new_el_2 = new Node('\0');
+    auto new_el_2 = new Node<T>();
     z = new_el_2;
     z->_next = z;
     head->_next = z;
+}
+
+template<typename T>
+LList<T>::LList(std::initializer_list<T> values) : LList() {
+    for (auto const &val: values) {
+        push_back(val);
+    }
 }
 
 template<typename T>
@@ -29,7 +38,7 @@ template<typename T>
 void LList<T>::push_back(T _val) {
     auto *new_element = new Node(_val);
 
-    Node *current = head;
+    Node<T> *current = head;
     while (current->_next != z) {
         current = current->_next;
     }
@@ -50,7 +59,7 @@ void LList<T>::push_front(T _val) {
 
 template<typename T>
 void LList<T>::insert(size_t index, T _val) {
-    Node *curr;
+    Node<T> *curr;
     int count;
     if (_size < index)
         throw std::out_of_range("oooooy, this is outside");
@@ -63,7 +72,7 @@ void LList<T>::insert(size_t index, T _val) {
         return;
     }
 
-    Node *previous_element = head;
+    Node<T> *previous_element = head;
     curr = head->_next;
     count = 0;
     while (count != index) {
@@ -72,7 +81,7 @@ void LList<T>::insert(size_t index, T _val) {
         curr = curr->_next;
     }
 
-    Node *new_element = new Node(_val);
+    Node<T> *new_element = new Node(_val);
     new_element->_next = curr;
     previous_element->_next = new_element;
 
@@ -92,7 +101,7 @@ void LList<T>::remove_at(size_t index) {
             return;
         }
 
-        Node *curr = head->_next, *previous = head;
+        Node<T> *curr = head->_next, *previous = head;
         int curr_i = 0;
         while (index != curr_i) {
             previous = curr;
@@ -110,7 +119,7 @@ void LList<T>::pop_back() {
     if (_size == 0)
         return;
 
-    Node *current = head->_next, *previous;
+    Node<T> *current = head->_next, *previous;
     while (current->_next != z) {
         previous = current;
         current = current->_next;
@@ -125,7 +134,7 @@ void LList<T>::pop_front() {
     if (_size == 0)
         return;
 
-    Node *temp = head->_next;
+    Node<T> *temp = head->_next;
     head->_next = temp->_next;
     delete temp;
     _size--;
@@ -147,8 +156,8 @@ void LList<T>::clear() {
 template<typename T>
 LList<T>::~LList() {
     clear();
-    delete head->_next;
     delete head;
+    delete z;
 }
 
 template<typename T>
@@ -161,7 +170,7 @@ T LList<T>::front() {
 template<typename T>
 T LList<T>::back() {
     if (_size != 0) {
-        Node *current = head->_next;
+        Node<T> *current = head->_next;
         while (current->_next != z) {
             current = current->_next;
         }
@@ -174,21 +183,33 @@ template<typename T>
 T &LList<T>::operator[](const size_t index) {
     if (_size <= index || index < 0)
         throw std::out_of_range("oooooy, this is outside");
-    Node *curr;
+    Node<T> *curr;
     size_t curr_i = 0;
     curr = head->_next;
+
     while (curr != z) {
         if (curr_i == index)
             return curr->_val;
         curr = curr->_next;
         curr_i++;
     }
+    return head->_val;
+}
+
+template<typename T>
+ListIterator<T> LList<T>::begin() {
+    return ListIterator<T>(head->_next);
+}
+
+template<typename T>
+ListIterator<T> LList<T>::end() {
+    return ListIterator<T>(z);
 }
 
 template<typename T>
 void LList<T>::print() {
     if (!empty()) {
-        Node *current = head->_next;
+        Node<T> *current = head->_next;
         while (current->_next != z) {
             cout << current->_val << " -> ";
             current = current->_next;
@@ -229,6 +250,11 @@ int main() {
     lst.push_back('q');
     lst.push_back('w');
     std::cout << lst.size() << ' ' << std::boolalpha << lst.empty() << std::endl;
+
+    LList<int> l = {3, 5, 2, 7};
+    for (auto &i: l) i += 2;
+    auto lambda = [& l](int a, int b) { return a + b * 10; };
+    std::cout << std::accumulate(l.begin(), l.end(), 0, lambda) << "\n";// 250
 
     return 0;
 }
