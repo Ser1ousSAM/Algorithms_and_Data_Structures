@@ -6,10 +6,10 @@ using std::cout;
 template<typename T>
 LList<T>::LList() {
     _size = 0;
-    Node<T> *new_el_1 = new Node<T>(NULL);
+    auto *new_el_1 = new Node<T>('\0');
     head = new_el_1;
 
-    Node<T> *new_el_2 = new Node<T>(NULL);
+    auto *new_el_2 = new Node<T>('\0');
     z = new_el_2;
     z->_next = z;
     head->_next = z;
@@ -27,7 +27,7 @@ bool LList<T>::empty() {
 
 template<typename T>
 void LList<T>::push_back(T _val) {
-    Node<T> *new_element = new Node<T>(_val);
+    auto *new_element = new Node<T>(_val);
 
     Node<T> *current = head;
     while (current->_next != z) {
@@ -40,7 +40,7 @@ void LList<T>::push_back(T _val) {
 
 template<typename T>
 void LList<T>::push_front(T _val) {
-    Node<T> *new_element = new Node<T>(_val);
+    auto *new_element = new Node<T>(_val);
 
     new_element->_next = head->_next;
     head->_next = new_element;
@@ -102,8 +102,8 @@ void LList<T>::remove_at(size_t index) {
         }
         previous->_next = curr->_next;
         delete curr;
+        _size--;
     }
-    _size--;
 }
 
 template<typename T>
@@ -111,7 +111,7 @@ void LList<T>::pop_back() {
     if (_size == 0)
         return;
 
-    Node<T> *current = head->_next, *previous = head;
+    Node<T> *current = head->_next, *previous;
     while (current->_next != z) {
         previous = current;
         current = current->_next;
@@ -182,11 +182,11 @@ T &LList<T>::operator[](const size_t index) {
  void LList<T>::print() {
      if (!empty()) {
          Node<T> *current = head->_next;
-         while (current != z) {
-             cout << current->_val << " ";
+         while (current->_next != z) {
+             cout << current->_val << " -> ";
              current = current->_next;
          }
-         cout << '\n';
+         cout << current->_val << '\n';
      }
  }
 

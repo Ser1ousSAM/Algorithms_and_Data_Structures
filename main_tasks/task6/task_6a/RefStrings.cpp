@@ -1,7 +1,8 @@
 #include <iostream>
 #include "Str.h"
 
-int main() {
+int main()
+{
     Str s;
     s = "bbbby";
     s += " s zyablamy";
@@ -9,6 +10,6 @@ int main() {
 
     Str m;
     m = "bbbb";
-    std::cout << s.rfind(m, 4);
+    std::cout << s.rfind(m, 4) << "\n";
     return 0;
 }
