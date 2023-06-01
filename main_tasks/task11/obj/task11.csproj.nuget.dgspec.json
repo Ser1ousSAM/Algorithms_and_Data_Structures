@@ -1,0 +1,60 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/task11.csproj": {}
+  },
+  "projects": {
+    "/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/task11.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/task11.csproj",
+        "projectName": "task11",
+        "projectPath": "/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/task11.csproj",
+        "packagesPath": "/home/gleb/.nuget/packages/",
+        "outputPath": "/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/gleb/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/6.0.116/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
