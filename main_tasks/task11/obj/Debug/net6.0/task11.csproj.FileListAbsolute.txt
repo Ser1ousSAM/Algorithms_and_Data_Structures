@@ -1,0 +1,15 @@
+/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/bin/Debug/net6.0/task11
+/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/bin/Debug/net6.0/task11.deps.json
+/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/bin/Debug/net6.0/task11.runtimeconfig.json
+/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/bin/Debug/net6.0/task11.dll
+/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/bin/Debug/net6.0/ref/task11.dll
+/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/bin/Debug/net6.0/task11.pdb
+/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/obj/Debug/net6.0/task11.csproj.AssemblyReference.cache
+/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/obj/Debug/net6.0/task11.GeneratedMSBuildEditorConfig.editorconfig
+/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/obj/Debug/net6.0/task11.AssemblyInfoInputs.cache
+/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/obj/Debug/net6.0/task11.AssemblyInfo.cs
+/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/obj/Debug/net6.0/task11.csproj.CoreCompileInputs.cache
+/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/obj/Debug/net6.0/task11.dll
+/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/obj/Debug/net6.0/ref/task11.dll
+/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/obj/Debug/net6.0/task11.pdb
+/home/gleb/Desktop/University/Algorithms_and_Data_Structures/main_tasks/task11/obj/Debug/net6.0/task11.genruntimeconfig.cache
